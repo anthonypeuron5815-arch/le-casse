@@ -1,0 +1,26 @@
+{
+  "name": "LE CASSE",
+  "short_name": "LE CASSE",
+  "description": "Le jeu de soirée où le butin monte et l'alarme est cachée. Une seconde de trop peut tout ruiner.",
+  "id": "/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
+  "orientation": "portrait",
+  "background_color": "#05070E",
+  "theme_color": "#05070E",
+  "categories": ["games", "entertainment"],
+  "lang": "fr",
+  "dir": "ltr",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "./icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Partie rapide", "short_name": "Partie", "url": "./index.html?go=quick", "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Mode Chaos", "short_name": "Chaos", "url": "./index.html?go=chaos", "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

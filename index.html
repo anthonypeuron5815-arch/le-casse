@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+<title>LE CASSE — Une seconde de trop peut tout ruiner</title>
+<meta name="description" content="LE CASSE : le jeu de soirée où le butin monte, l'alarme est cachée, et une seconde de trop peut tout ruiner." />
+<meta name="theme-color" content="#05070E" />
+<meta name="color-scheme" content="dark" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="LE CASSE" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="LE CASSE" />
+<meta property="og:description" content="Le butin monte. L'alarme est cachée. Une seconde de trop peut tout ruiner." />
+<meta property="og:image" content="./icons/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="icon" href="./icons/favicon.png" sizes="any" />
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+<link rel="stylesheet" href="./css/app.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══════════════ ACCUEIL ══════════════ -->
+  <section class="screen is-active" id="screen-home" data-screen="home">
+    <div class="home-grain"></div>
+    <div class="home-glow"></div>
+    <div class="scroll pad-safe home-wrap">
+      <header class="home-head">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100"><circle class="dial-ring" cx="50" cy="50" r="38"/><circle class="dial-ring2" cx="50" cy="50" r="27"/><g class="dial-spokes"><rect x="47" y="4" width="6" height="16" rx="3"/><rect x="47" y="80" width="6" height="16" rx="3"/><rect x="4" y="47" width="16" height="6" rx="3"/><rect x="80" y="47" width="16" height="6" rx="3"/></g><circle class="dial-core" cx="50" cy="50" r="9"/></svg>
+        </div>
+        <h1 class="brand">LE<span>CASSE</span></h1>
+        <p class="tagline">Une seconde de trop peut tout ruiner.</p>
+      </header>
+
+      <div class="home-actions">
+        <button class="btn btn-hero" data-action="quick">
+          <span class="btn-kicker">Mode Classique</span>
+          <span class="btn-label">Partie rapide</span>
+        </button>
+        <button class="btn btn-chaos" data-action="chaos">
+          <span class="btn-kicker">Fausses alarmes • événements</span>
+          <span class="btn-label">Mode Chaos</span>
+        </button>
+        <div class="home-row">
+          <button class="btn btn-ghost" data-action="rules">Règles</button>
+          <button class="btn btn-ghost" data-action="settings">Réglages</button>
+        </div>
+      </div>
+
+      <div class="home-foot">
+        <div class="best-strip" id="home-best"></div>
+        <button class="link-btn" data-action="install-help">Installer sur l'écran d'accueil</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ CRÉATION DE PARTIE ══════════════ -->
+  <section class="screen" id="screen-setup" data-screen="setup">
+    <div class="scroll pad-safe">
+      <div class="topbar">
+        <button class="icon-btn" data-action="home" aria-label="Retour">‹</button>
+        <div class="topbar-title">L'équipe</div>
+        <div class="mode-chip" id="setup-mode-chip">CLASSIQUE</div>
+      </div>
+
+      <div class="section">
+        <div class="label">Nombre de braqueurs</div>
+        <div class="seg" id="count-seg" role="group" aria-label="Nombre de joueurs"></div>
+      </div>
+
+      <div class="section">
+        <div class="label">Qui joue ?</div>
+        <div class="players-edit" id="players-edit"></div>
+      </div>
+
+      <div class="section">
+        <div class="label">Longueur de la partie</div>
+        <div class="seg seg-sm" id="rounds-seg" role="group" aria-label="Nombre de manches"></div>
+      </div>
+    </div>
+    <div class="dock pad-safe">
+      <button class="btn btn-hero" data-action="start-game">
+        <span class="btn-label">Lancer le braquage</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ══════════════ PLATEAU DE JEU ══════════════ -->
+  <section class="screen screen-board" id="screen-board" data-screen="board">
+    <div class="board" id="board"></div>
+
+    <div class="hud" id="hud">
+      <div class="hud-top">
+        <div class="hud-round" id="hud-round">MANCHE 1/5</div>
+        <button class="icon-btn hud-quit" data-action="confirm-quit" aria-label="Quitter">✕</button>
+      </div>
+
+      <div class="vault" id="vault">
+        <div class="vault-label" id="vault-label">BUTIN</div>
+        <div class="vault-amount" id="vault-amount">0 €</div>
+        <div class="vault-sub" id="vault-sub">Posez vos doigts</div>
+      </div>
+
+      <div class="hud-bottom">
+        <div class="event-banner" id="event-banner"></div>
+      </div>
+    </div>
+
+    <div class="countdown" id="countdown"><span id="countdown-num">3</span></div>
+    <div class="alarm-flash" id="alarm-flash"><div class="alarm-word">ALARME</div></div>
+    <div class="fake-flash" id="fake-flash"><div class="fake-word">ALARME ?</div></div>
+  </section>
+
+  <!-- ══════════════ RÉSULTATS DE MANCHE ══════════════ -->
+  <section class="screen" id="screen-results" data-screen="results">
+    <div class="scroll pad-safe">
+      <div class="res-head">
+        <div class="res-kicker" id="res-kicker">MANCHE 1</div>
+        <h2 class="res-title" id="res-title">Résultat du casse</h2>
+        <p class="res-quote" id="res-quote"></p>
+      </div>
+
+      <div class="timeline-card">
+        <div class="tl-top">
+          <span class="tl-legend"><i class="dot dot-perfect"></i>Zone parfaite</span>
+          <span class="tl-legend"><i class="dot dot-alarm"></i>Alarme <b id="tl-alarm-time">—</b></span>
+        </div>
+        <div class="timeline" id="timeline">
+          <div class="tl-track"></div>
+          <div class="tl-perfect" id="tl-perfect"></div>
+          <div class="tl-alarm" id="tl-alarm"></div>
+          <div class="tl-marks" id="tl-marks"></div>
+        </div>
+        <div class="tl-scale" id="tl-scale"></div>
+      </div>
+
+      <div class="res-list" id="res-list"></div>
+    </div>
+    <div class="dock pad-safe dock-2">
+      <button class="btn btn-ghost" data-action="standings">Classement</button>
+      <button class="btn btn-hero" data-action="next-round"><span class="btn-label" id="next-round-label">Manche suivante</span></button>
+    </div>
+  </section>
+
+  <!-- ══════════════ CLASSEMENT ══════════════ -->
+  <section class="screen" id="screen-standings" data-screen="standings">
+    <div class="scroll pad-safe">
+      <div class="res-head">
+        <div class="res-kicker">CLASSEMENT</div>
+        <h2 class="res-title">Le tableau des braqueurs</h2>
+      </div>
+      <div class="stand-list" id="stand-list"></div>
+    </div>
+    <div class="dock pad-safe">
+      <button class="btn btn-hero" data-action="back-results"><span class="btn-label">Retour</span></button>
+    </div>
+  </section>
+
+  <!-- ══════════════ FIN DE PARTIE ══════════════ -->
+  <section class="screen" id="screen-final" data-screen="final">
+    <div class="confetti" id="confetti"></div>
+    <div class="scroll pad-safe">
+      <div class="final-head">
+        <div class="res-kicker">FIN DU CASSE</div>
+        <h2 class="final-name" id="final-name">—</h2>
+        <div class="final-amount" id="final-amount">0 €</div>
+        <p class="final-sub" id="final-sub"></p>
+      </div>
+      <div class="podium" id="podium"></div>
+      <div class="label label-center">Palmarès</div>
+      <div class="trophies" id="trophies"></div>
+      <div class="final-rest" id="final-rest"></div>
+    </div>
+    <div class="dock pad-safe dock-2">
+      <button class="btn btn-ghost" data-action="home">Accueil</button>
+      <button class="btn btn-hero" data-action="replay"><span class="btn-label">Rejouer</span></button>
+    </div>
+  </section>
+
+  <!-- ══════════════ RÈGLES ══════════════ -->
+  <section class="screen" id="screen-rules" data-screen="rules">
+    <div class="scroll pad-safe">
+      <div class="topbar">
+        <button class="icon-btn" data-action="home" aria-label="Retour">‹</button>
+        <div class="topbar-title">Règles</div>
+        <div class="topbar-spacer"></div>
+      </div>
+
+      <div class="rule-hero">
+        <p>Garde ton doigt pour gagner plus.<br/>Retire-le pour sauver ton butin.<br/><b>Reste une seconde de trop et tu perds tout.</b></p>
+      </div>
+
+      <ol class="rule-steps">
+        <li><span class="rn">1</span><div><b>Tout le monde pose son doigt</b><small>Chaque joueur a sa zone de couleur. La manche démarre quand tout le monde est en place.</small></div></li>
+        <li><span class="rn">2</span><div><b>Le butin monte</b><small>De plus en plus vite. Plus tu restes, plus tu gagnes.</small></div></li>
+        <li><span class="rn">3</span><div><b>Retire ton doigt quand tu veux</b><small>Tu sécurises immédiatement le montant affiché.</small></div></li>
+        <li><span class="rn">4</span><div><b>L'alarme est cachée</b><small>Elle peut sonner à tout moment. Si ton doigt est encore posé : <b class="c-red">0 € sur la manche</b>.</small></div></li>
+        <li><span class="rn">5</span><div><b>La zone parfaite</b><small>Les dernières secondes avant l'alarme sont secrètes et <b class="c-gold">doublent ton butin</b>. Sortir pile là, c'est le casse parfait.</small></div></li>
+        <li><span class="rn">6</span><div><b>Le plus riche gagne</b><small>Après la dernière manche, le plus gros butin total rafle tout.</small></div></li>
+      </ol>
+
+      <div class="rule-mode">
+        <h3>Mode Chaos</h3>
+        <p>Même règle, mais l'alarme est plus imprévisible et la manche peut être frappée par des événements : <b>fausses alarmes</b> qui font paniquer tout le monde, <b>coffre ouvert</b> qui double la vitesse du butin, <b>panne</b> qui cache le montant. Rien n'est stable.</p>
+      </div>
+    </div>
+    <div class="dock pad-safe">
+      <button class="btn btn-hero" data-action="home"><span class="btn-label">C'est compris</span></button>
+    </div>
+  </section>
+
+  <!-- ══════════════ RÉGLAGES ══════════════ -->
+  <section class="screen" id="screen-settings" data-screen="settings">
+    <div class="scroll pad-safe">
+      <div class="topbar">
+        <button class="icon-btn" data-action="home" aria-label="Retour">‹</button>
+        <div class="topbar-title">Réglages</div>
+        <div class="topbar-spacer"></div>
+      </div>
+      <div class="toggles" id="toggles"></div>
+      <div class="settings-info">
+        <h3>Installer LE CASSE</h3>
+        <p><b>iPhone</b> — ouvre le lien dans Safari, appuie sur le bouton Partager, puis <b>« Sur l'écran d'accueil »</b>.</p>
+        <p><b>Android</b> — ouvre le lien dans Chrome, menu <b>⋮</b>, puis <b>« Installer l'application »</b>.</p>
+        <p class="muted">Une fois installé, le jeu fonctionne hors connexion.</p>
+      </div>
+      <button class="link-btn danger" data-action="reset-data">Effacer les données locales</button>
+      <div class="version">LE CASSE · v1.0</div>
+    </div>
+  </section>
+
+  <!-- ══════════════ MODALE ══════════════ -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h3 id="modal-title">Quitter la partie ?</h3>
+      <p id="modal-text">Le butin de tout le monde sera perdu.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modal-cancel">Annuler</button>
+        <button class="btn btn-danger" id="modal-ok"><span class="btn-label">Quitter</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script type="module" src="./js/app.js"></script>
+</body>
+</html>

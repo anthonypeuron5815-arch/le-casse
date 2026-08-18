@@ -1,0 +1,10 @@
+{
+  "name": "le-casse",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LE CASSE — jeu de soirée PWA. Le butin monte, l'alarme est cachée.",
+  "scripts": {
+    "dev": "npx --yes serve . -l 5173",
+    "start": "npx --yes serve . -l 5173"
+  }
+}
